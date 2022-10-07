@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "build-tail": "NODE_ENV=production tailwindcss build -i styles/tailwindcss.css -o assets/styles.css"
+    "build-tail": "NODE_ENV=production tailwindcss build -i styles/tailwindcss.css -o assets/styles.css",
+    "rock": "NODE_ENV=production tailwindcss build -i styles/tailwindcss.css -o assets/styles.css & nodemon server.js"
   },
   "author": "",
   "license": "ISC",

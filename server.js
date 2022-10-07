@@ -8,7 +8,7 @@ app.set("views", path.join(__dirname, 'views'));
 app.use('/assets', express.static("assets"));
 
 app.get("/", (req, res) => {
-    res.render("index", {});
+    res.render("login", {});
 });
 
 app.listen(port, () => {

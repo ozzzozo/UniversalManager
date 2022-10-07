@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Manager</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+
+    <style>
+        .ghIcon {
+            width: 24px;
+            float: right;
+            padding-right: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="h-screen flex">
+        <div class="flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center">
+          <div>
+            <h1 class="text-white font-bold text-4xl font-sans">Universal Manager</h1>
+            <p class="text-white mt-1">A Framework to help you manage and collaborate on your Pentest and Bug Bounty reports</p>
+            <a href="https://github.com/" target="_blank">
+                <button type="submit" class="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">
+                    <svg class="ghIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56C20.565 21.917 24 17.495 24 12.292 24 5.78 18.627.5 12 .5z"></path></svg> 
+                    Read More</button>
+            </a>
+          </div>
+        </div>
+        <div class="flex w-1/2 justify-center items-center bg-white">
+          <form class="bg-white" action="api/login" method="POST">
+            <h1 class="text-gray-800 font-bold text-2xl mb-1">System Login</h1>
+            <p class="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
+            <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              
+              <input class="pl-2 outline-none border-none" type="text" name="" id="" placeholder="Username" />
+            </div>
+            <div class="flex items-center border-2 py-2 px-3 rounded-2xl">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+              </svg>
+              <input class="pl-2 outline-none border-none" type="text" name="" id="" placeholder="Password" />
+            </div>
+
+            <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2" value="login">Login</button>
+            <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Forgot Password?</span>
+          </form>
+        </div>
+      </div>
+</body>
+</html>
