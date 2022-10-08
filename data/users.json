@@ -1,0 +1,18 @@
+{
+  "UniversalMind": {
+    "password": "A6J7Ey6H3Ubnm/kXnTTPteIj3EN1xCYjH8OoL2/GyDA=",
+    "sessions": [
+      {
+        "UUID": "e5c8d3bf-61eb-4548-b062-f2d716d5ab39",
+        "OS": "Windows NT 10.0",
+        "IP": "::ffff:127.0.0.1"
+      },
+      {
+        "UUID": "5c816fa5-5e9f-43d2-8191-a33d72be649b",
+        "OS": "Windows NT 10.0",
+        "IP": "::ffff:127.0.0.1"
+      }
+    ],
+    "role": "c4969180-472f-11ed-b878-0242ac120002"
+  }
+}

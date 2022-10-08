@@ -1,0 +1,5 @@
+{
+    "c4969180-472f-11ed-b878-0242ac120002": {
+        "perms": ["users.create", "users.change", "users.delete"]
+    }
+}

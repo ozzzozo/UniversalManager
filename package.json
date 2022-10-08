@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
-    "postcss-cli": "^10.0.0"
+    "postcss-cli": "^10.0.0",
+    "uuid": "^9.0.0"
   },
   "tailwind:css": "postcss public/styles/tailwind.css -o public/styles/index.css",
   "devDependencies": {
