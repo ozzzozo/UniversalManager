@@ -3,16 +3,12 @@
     "password": "A6J7Ey6H3Ubnm/kXnTTPteIj3EN1xCYjH8OoL2/GyDA=",
     "sessions": [
       {
-        "UUID": "e5c8d3bf-61eb-4548-b062-f2d716d5ab39",
-        "OS": "Windows NT 10.0",
-        "IP": "::ffff:127.0.0.1"
-      },
-      {
-        "UUID": "5c816fa5-5e9f-43d2-8191-a33d72be649b",
+        "UUID": "8d179ce9-03ab-43d5-9d7c-e140a1971094",
         "OS": "Windows NT 10.0",
         "IP": "::ffff:127.0.0.1"
       }
     ],
+    "workspaces": "89b819b5-8337-4d78-bac9-20f62f1721f2;b4f960f4-29f3-4fbc-86cf-cae288bbf150",
     "role": "c4969180-472f-11ed-b878-0242ac120002"
   }
 }

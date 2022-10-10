@@ -52,9 +52,31 @@ app.post("/api/auth", async (req, res) => {
     }
 });
 
-app.get("/", (req, res) => {
-    res.render("login", {});
+app.get("/", async (req, res) => {
+    let authCookie = req.cookies.UUID;
+
+    if(util.isEmptyOrUndefined(authCookie)) {
+        console.log("READY")
+        return res.render("login", {});
+    }
+
+    let usersConfig = await fileHandler.readJson("data/users.json");
+
+    for(var key in usersConfig) {
+        let sessions = usersConfig[key]["sessions"];
+        
+        for(let i = 0; i < sessions.length; i++) {
+            if(authCookie === sessions[i]["UUID"]) {
+                return res.render("dashboard");
+            }
+        }
+    }    
+    res.render("login");
 });
+
+// app.get("/dashboard", (req, res) => {
+    
+// });
 
 // app.get("/*", (req, res) => {
 //     res.render("404", {"error": "not found"});
