@@ -6,19 +6,9 @@
     "email": "jd@universalmind.io",
     "pfp": "default",
     "sessions": [
-      {
-        "UUID": "a782e0d5-acbe-4ac8-8154-eb190ec2eed9",
-        "OS": "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
-        "IP": "::ffff:127.0.0.1"
-      },
-      {
-        "UUID": "cf203f30-4eb9-42ed-ab5f-f4d18998854d",
-        "OS": "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
-        "IP": "::ffff:127.0.0.1"
-      }
     ],
     "workspaces": "",
-    "role": "c4969180-472f-11ed-b878-0242ac120002",
+    "roles": "c4969180-472f-11ed-b878-0242ac120002",
     "org": "8e913f55-43ba-4d5e-82dc-6583ad3cdebd"
   }
 }

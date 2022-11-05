@@ -1,0 +1,41 @@
+const fileHandler = require("../util/fileHandler")
+const util = require("../util/variables");
+
+async function workspacesInfo(workspacesIDS) {
+    let workspacesInfo = [];
+
+    for(let i = 0; i < workspacesIDS.length; i++) {
+
+        if(util.isEmptyOrUndefined(workspacesIDS[i])) {
+            continue;
+        }
+
+        let path =  `data/workspaces/${workspacesIDS[i]}/`;
+        let workspace = await fileHandler.readJson(path + "workspace.json");
+
+        workspace["ID"] = workspacesIDS[i];
+        workspace["ReportsCount"] = workspace["reports"].split(";").length - 1;
+
+        workspacesInfo.push({workspace: workspace});
+    }
+
+    return workspacesInfo;
+}
+
+async function roles(rolesIDS) {
+    let roles = await fileHandler.readJson(`data/roles.json`); 
+    let perms = [];
+
+    for(let i = 0; i < rolesIDS.length; i++) {
+        if(util.isEmptyOrUndefined(rolesIDS[i])) {
+            continue;
+        }
+
+        let rolePerms = roles[rolesIDS[i]];
+        perms = perms.concat(rolePerms["perms"]);
+    }
+
+    return perms;
+}
+
+module.exports = { workspacesInfo, roles }

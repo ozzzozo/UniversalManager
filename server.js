@@ -6,6 +6,7 @@ const port = 3000
 
 const util = require("./util/variables");
 const fileHandler = require("./util/fileHandler")
+const loaders = require("./util/loaders")
 
 const app = express();
 app.set("view engine", "ejs")
@@ -17,8 +18,8 @@ app.use(cookieParser());
 const usersHandler = require("./routers/users")
 const workspacesHandler = require("./routers/workspaces")
 
-app.use("/api/", usersHandler);
-app.use("/workspaces/", workspacesHandler);
+app.use("/api", usersHandler);
+app.use("/workspaces", workspacesHandler);
 
 app.get("/", async (req, res) => {
     let authCookie = req.cookies.UUID;
@@ -35,24 +36,7 @@ app.get("/", async (req, res) => {
         for(let i = 0; i < sessions.length; i++) {
             if(authCookie === sessions[i]["UUID"]) {
                 let workspacesIDS = usersConfig[key]["workspaces"].split(";");
-                let workspacesInfo = [];
-
-                for(let i = 0; i < workspacesIDS.length; i++) {
-
-                    if(util.isEmptyOrUndefined(workspacesIDS[i])) {
-                        continue;
-                    }
-
-                    let path =  `data/workspaces/${workspacesIDS[i]}/`;
-                    let workspace = await fileHandler.readJson(path + "workspace.json");
-
-                    workspace["ID"] = workspacesIDS[i];
-                    workspace["ReportsCount"] = workspace["reports"].split(";").length - 1;
-
-                    workspacesInfo.push({workspace: workspace});
-                }
-
-                console.log(workspacesInfo);
+                let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
 
                 return res.render("dashboard", {pfp: usersConfig[key]["pfp"], 
                 fname: usersConfig[key]["fname"], lname: usersConfig[key]["lname"],
