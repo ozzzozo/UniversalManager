@@ -25,4 +25,9 @@ async function addSession(user, os, ip) {
     return;
 } 
 
-module.exports = { addSession };
+async function getRole(roleID) {
+    let roles = await fileHandler.readJson("data/roles.json");
+    return roles[roleID];
+}
+
+module.exports = { addSession, getRole };

@@ -1,8 +1,10 @@
 <header class="text-gray-600 body-font">
   <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
     <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-      <img class="w-10 h-10 text-white rounded-full" src="/assets/images/Logo.jpg">
-      <span class="ml-3 text-xl">John Doe</span>
+      <% if (typeof pfp !== 'undefined') {%>
+        <img class="w-10 h-10 text-white rounded-full" src="/assets/images/profiles/<%= pfp %>.jpg">
+     <% } %>
+      <span class="ml-3 text-xl"><%= fname %> <%= lname %></span>
     </a>
     <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
       <a class="mr-5 hover:text-gray-900" href="/">Dashboard</a>

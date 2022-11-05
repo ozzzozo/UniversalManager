@@ -9,6 +9,8 @@ const util = require("./util/variables");
 const fileHandler = require("./util/fileHandler")
 const permission = require("./util/permission")
 
+const auth = require("./util/auth")
+
 const app = express();
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, 'views'));
@@ -16,7 +18,7 @@ app.use('/assets', express.static("assets"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.post("/api/auth", async (req, res) => {
+app.post("/api/users/auth", async (req, res) => {
     
     if(req.body === undefined) {
         res.send(400);
@@ -30,22 +32,16 @@ app.post("/api/auth", async (req, res) => {
     }
 
     password = crypto.createHash('sha256').update(password).digest('base64');
-    users = await fileHandler.readJson("data/users.json")
 
-    if(username in users) {
-        if(users[username]["password"] === password) {
-            let os = req.headers['user-agent'].match(/(?<=\().*?(?=;)/)[0];
-            let uuid = await permission.addSession(username, os, req.socket.remoteAddress);
+    if((await auth.login(username, password)) === true) {
+        let os = req.headers['user-agent']; //.match(/(?<=\().*?(?=;)/)[0]; // possible xss if displayed?
+        let uuid = await permission.addSession(username, os, req.socket.remoteAddress);
 
-            if(uuid !== undefined) {
-                res.cookie('UUID', uuid);
-                res.redirect("/");
-            } else {
-                res.render("login.ejs", {error: "Something went wrong."})
-            }
-
+        if(uuid !== undefined) {
+            res.cookie('UUID', uuid);
+            res.redirect("/");
         } else {
-            res.render("login", {error: "Username and Password Combination Unknown!"});
+            res.render("login.ejs", {error: "Something went wrong."})
         }
     } else {
         res.render("login", {error: "Username and Password Combination Unknown!"});
@@ -56,7 +52,6 @@ app.get("/", async (req, res) => {
     let authCookie = req.cookies.UUID;
 
     if(util.isEmptyOrUndefined(authCookie)) {
-        console.log("READY")
         return res.render("login", {});
     }
 
@@ -67,20 +62,35 @@ app.get("/", async (req, res) => {
         
         for(let i = 0; i < sessions.length; i++) {
             if(authCookie === sessions[i]["UUID"]) {
-                return res.render("dashboard");
+                let workspacesIDS = usersConfig[key]["workspaces"].split(";");
+                let workspacesInfo = [];
+
+                for(let i = 0; i < workspacesIDS.length; i++) {
+
+                    if(util.isEmptyOrUndefined(workspacesIDS[i])) {
+                        continue;
+                    }
+
+                    let path =  `data/workspaces/${workspacesIDS[i]}/`;
+                    let workspace = await fileHandler.readJson(path + "workspace.json");
+
+                    workspace["ID"] = workspacesIDS[i];
+                    workspace["ReportsCount"] = workspace["reports"].split(";").length - 1;
+
+                    workspacesInfo.push({workspace: workspace});
+                }
+
+                console.log(workspacesInfo);
+
+                return res.render("dashboard", {pfp: usersConfig[key]["pfp"], 
+                fname: usersConfig[key]["fname"], lname: usersConfig[key]["lname"],
+                workspaces: workspacesInfo
+                });
             }
         }
     }    
     res.render("login");
 });
-
-// app.get("/dashboard", (req, res) => {
-    
-// });
-
-// app.get("/*", (req, res) => {
-//     res.render("404", {"error": "not found"});
-// });
 
 app.listen(port, () => {
     console.log(`[+] Server Running at Port ${port}`)
