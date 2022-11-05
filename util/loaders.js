@@ -1,3 +1,8 @@
+/*
+    all of the Functions that load data into variables
+*/
+
+
 const fileHandler = require("../util/fileHandler")
 const util = require("../util/variables");
 

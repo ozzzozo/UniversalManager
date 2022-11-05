@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Workspaces - UniversalManager</title>
     <link rel="stylesheet" href="/assets/styles.css">
+    
+    <script src="/assets/lib/js/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="/assets/lib/css/sweetalert2.min.css">
+
+    <script>
+      var perms = '<%- JSON.stringify(perms) %>';
+    </script>
+    <script type="text/javascript" src="/assets/js/permission.js"></script>
 
     <style>
       #createUrl {
@@ -19,9 +27,12 @@
     <% if(workspaces.length < 1) { %>
       <div class="container px-5 py-24 mx-auto">
         <center>
-          <h1>It looks like you don't have any workspaces, wanna <a href="/workspaces/create" id="createUrl">create one</a>?</h1>
+          <h1>It looks like you don't have any workspaces, wanna <a href="javascript:void(0)" id="createUrl">create one</a>?</h1>
         </center>
       </div>
+      <script>
+        createWorkspaceListener();
+      </script>
     <% } else { %>
       <section class="text-gray-600 body-font">
         <div class="container px-5 py-24 mx-auto">
@@ -61,5 +72,6 @@
     <% } %>
 
     <%- include('../footer'); %>
+
 </body>
 </html>

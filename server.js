@@ -38,9 +38,12 @@ app.get("/", async (req, res) => {
                 let workspacesIDS = usersConfig[key]["workspaces"].split(";");
                 let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
 
+                let rolesIDS = usersConfig[key]["roles"].split(";");
+                let perms = await loaders.roles(rolesIDS);
+
                 return res.render("dashboard", {pfp: usersConfig[key]["pfp"], 
                 fname: usersConfig[key]["fname"], lname: usersConfig[key]["lname"],
-                workspaces: workspacesInfo
+                workspaces: workspacesInfo, perms: perms
                 });
             }
         }
