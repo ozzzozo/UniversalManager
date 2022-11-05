@@ -4,12 +4,8 @@ const bodyParser = require("body-parser")
 const cookieParser = require('cookie-parser');
 const port = 3000
 
-const crypto = require('crypto');
 const util = require("./util/variables");
 const fileHandler = require("./util/fileHandler")
-const permission = require("./util/permission")
-
-const auth = require("./util/auth")
 
 const app = express();
 app.set("view engine", "ejs")
@@ -18,35 +14,11 @@ app.use('/assets', express.static("assets"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.post("/api/users/auth", async (req, res) => {
-    
-    if(req.body === undefined) {
-        res.send(400);
-    }
-    
-    let username = req.body.username;
-    let password = req.body.password;
+const usersHandler = require("./routers/users")
+const workspacesHandler = require("./routers/workspaces")
 
-    if(util.isEmptyOrUndefined(username) || util.isEmptyOrUndefined(password)) {
-        res.json({"error": "field error"});
-    }
-
-    password = crypto.createHash('sha256').update(password).digest('base64');
-
-    if((await auth.login(username, password)) === true) {
-        let os = req.headers['user-agent']; //.match(/(?<=\().*?(?=;)/)[0]; // possible xss if displayed?
-        let uuid = await permission.addSession(username, os, req.socket.remoteAddress);
-
-        if(uuid !== undefined) {
-            res.cookie('UUID', uuid);
-            res.redirect("/");
-        } else {
-            res.render("login.ejs", {error: "Something went wrong."})
-        }
-    } else {
-        res.render("login", {error: "Username and Password Combination Unknown!"});
-    }
-});
+app.use("/api/", usersHandler);
+app.use("/workspaces/", workspacesHandler);
 
 app.get("/", async (req, res) => {
     let authCookie = req.cookies.UUID;
