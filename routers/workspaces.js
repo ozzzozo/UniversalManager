@@ -2,6 +2,7 @@ const express = require('express')
 
 const router = express.Router()
 const util = require("../util/variables");
+const auth = require("../util/auth");
 const fileHandler = require("../util/fileHandler")
 const loaders = require("../util/loaders")
 
@@ -28,7 +29,7 @@ router.get("/", async (req, res) => {
                 let perms = await loaders.roles(rolesIDS);
 
                 console.log(perms);
-                return res.render("workspaces/workspaces", {pfp: usersConfig[key]["pfp"], 
+                return res.render("workspaces/workspacesPage", {pfp: usersConfig[key]["pfp"], 
                     fname: usersConfig[key]["fname"], lname: usersConfig[key]["lname"],
                     workspaces: workspacesInfo, perms: perms
                 });
@@ -36,6 +37,35 @@ router.get("/", async (req, res) => {
         }
     }    
     res.render("login");
+});
+
+router.get("/create", async (req, res) => {
+    let authCookie = req.cookies.UUID;
+    if(util.isEmptyOrUndefined(authCookie)) {
+        return res.render("login", {});
+    }
+
+    let usersConfig = await fileHandler.readJson("data/users.json");
+    let userKey = await auth.getKey(authCookie, usersConfig);
+    if(util.isEmptyOrUndefined(userKey)) {
+        return res.render("login", {});
+    }
+
+    let rolesIDS = usersConfig[userKey]["roles"].split(";");
+    let perms = await loaders.roles(rolesIDS);
+
+    let workspacesIDS = usersConfig[userKey]["workspaces"].split(";");
+    let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
+
+    if(perms.includes("workspaces.create")) {
+        res.render("workspaces\\create", {pfp: usersConfig[userKey]["pfp"], 
+        fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+        workspaces: workspacesInfo, perms: perms});
+    } else {
+        res.render("workspaces\\workspacesPage", {pfp: usersConfig[userKey]["pfp"], 
+        fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+        workspaces: workspacesInfo, perms: perms, error: 101});
+    }
 });
 
 module.exports = router

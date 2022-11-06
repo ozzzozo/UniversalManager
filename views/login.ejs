@@ -7,6 +7,10 @@
     <title>Universal Manager</title>
     <link rel="stylesheet" href="/assets/styles.css">
 
+    <script src="/assets/lib/js/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="/assets/lib/css/sweetalert2.min.css">
+    <script type="text/javascript" src="/assets/js/codes.js"></script>
+
     <style>
         .ghIcon {
             width: 24px;
@@ -51,9 +55,11 @@
             </div>
 
             <button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2" value="login">Login</button>
+            
             <% if (typeof error !== 'undefined') {%>
               <p class="error text-sm ml-2"><%= error %></p>
-           <% } %>
+            <% } %>
+
             <span class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Forgot Password?</span>
           </form>
         </div>
