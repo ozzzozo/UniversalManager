@@ -20,7 +20,9 @@ router.get("/", async (req, res) => {
         
         for(let i = 0; i < sessions.length; i++) {
             if(authCookie === sessions[i]["UUID"]) {
-                let workspacesIDS = usersConfig[key]["workspaces"].split(";");
+                let orgs = await fileHandler.readJson("data/orgs.json");
+
+                let workspacesIDS = orgs[usersConfig[key]["org"]]["workspaces"].split(";");
                 let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
 
                 let rolesIDS = usersConfig[key]["roles"].split(";");
@@ -51,7 +53,9 @@ router.get("/create", async (req, res) => {
     let rolesIDS = usersConfig[userKey]["roles"].split(";");
     let perms = await loaders.roles(rolesIDS);
 
-    let workspacesIDS = usersConfig[userKey]["workspaces"].split(";");
+    let orgs = await fileHandler.readJson("data/orgs.json");
+
+    let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
     let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
 
     if(perms.includes("workspaces.create")) {

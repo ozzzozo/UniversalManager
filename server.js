@@ -35,7 +35,9 @@ app.get("/", async (req, res) => {
         
         for(let i = 0; i < sessions.length; i++) {
             if(authCookie === sessions[i]["UUID"]) {
-                let workspacesIDS = usersConfig[key]["workspaces"].split(";");
+                let orgs = await fileHandler.readJson("data/orgs.json");
+
+                let workspacesIDS = orgs[usersConfig[key]["org"]]["workspaces"].split(";");
                 let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
 
                 let rolesIDS = usersConfig[key]["roles"].split(";");
