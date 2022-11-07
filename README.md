@@ -6,6 +6,6 @@
 
 251-500 error: <br>
 251 - You don\'t have the required permissions to create a workspace!  <br>
-252 - Image size must no exceed 2MB! <br>
+252 - Image size must not exceed 2MB! <br>
 253 - Invalid File Type! <br>
 254 - An Unknown Error as occurred! <br>
