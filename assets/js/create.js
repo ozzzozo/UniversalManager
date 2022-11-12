@@ -13,13 +13,13 @@ function validFileType(file) {
 
 function returnFileSize(number) {
     if (number < 1024) {
-      return `${number} bytes`;
+        return `${number} bytes`;
     } else if (number >= 1024 && number < 1048576) {
-      return `${(number / 1024).toFixed(1)} KB`;
+        return `${(number / 1024).toFixed(1)} KB`;
     } else if (number >= 1048576) {
-      return `${(number / 1048576).toFixed(1)} MB`;
+        return `${(number / 1048576).toFixed(1)} MB`;
     }
-  }
+}
   
 
 function updateImageDisplay() {
@@ -52,7 +52,7 @@ function updateImageDisplay() {
                 listItem.appendChild(image);
                 listItem.appendChild(para);
             } else {
-                para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
+                para.textContent = `File name ${file.name}: Not a valid file type.`;
                 listItem.appendChild(para);
             }
 

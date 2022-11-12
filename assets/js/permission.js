@@ -17,7 +17,7 @@ function createWorkspaceListener(id) {
         if(perms.includes(WORKSPACES_CREATE)) {
             window.location.href = "/workspaces/create";
         } else {
-            popup(101);
+            popup(251);
         }
     });
 }

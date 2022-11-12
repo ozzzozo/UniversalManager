@@ -3,16 +3,16 @@ const fileHandler = require("./fileHandler")
 const { 
     v1: uuidv1,
     v4: uuidv4,
-  } = require('uuid');
+} = require('uuid');
 
-function newLogin() {
+function getUUID() {
     let uuid = uuidv4();
     return uuid;
 }
 
 async function addSession(user, os, ip) {
     let newJson = await fileHandler.readJson("data/users.json");
-    let uuid = newLogin();
+    let uuid = getUUID();
     console.log(uuid);
 
     console.log(newJson[user]["sessions"]);
@@ -30,4 +30,4 @@ async function getRole(roleID) {
     return roles[roleID];
 }
 
-module.exports = { addSession, getRole };
+module.exports = { addSession, getRole, getUUID };
