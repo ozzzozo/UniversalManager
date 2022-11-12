@@ -3,7 +3,7 @@
 
 ## Error codes
 0-250 success:<br>
-
+0 - Workspace successfully created!
 251-500 error: <br>
 251 - You don\'t have the required permissions to create a workspace!  <br>
 252 - Image size must not exceed 2MB! <br>
