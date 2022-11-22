@@ -21,28 +21,23 @@ router.get("/", async (req, res) => {
     }
 
     let usersConfig = await fileHandler.readJson("data/users.json");
+    let userKey = await auth.getKey(authCookie, usersConfig);
+    if(util.isEmptyOrUndefined(userKey)) {
+        return res.render("login", {});
+    }
 
-    for(var key in usersConfig) {
-        let sessions = usersConfig[key]["sessions"];
-        
-        for(let i = 0; i < sessions.length; i++) {
-            if(authCookie === sessions[i]["UUID"]) {
-                let orgs = await fileHandler.readJson("data/orgs.json");
+    let orgs = await fileHandler.readJson("data/orgs.json");
 
-                let workspacesIDS = orgs[usersConfig[key]["org"]]["workspaces"].split(";");
-                let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
+    let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
+    let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
 
-                let rolesIDS = usersConfig[key]["roles"].split(";");
-                let perms = await loaders.roles(rolesIDS);
+    let rolesIDS = usersConfig[userKey]["roles"].split(";");
+    let perms = await loaders.roles(rolesIDS);
 
-                return res.render("workspaces/workspacesPage", {pfp: usersConfig[key]["pfp"], 
-                    fname: usersConfig[key]["fname"], lname: usersConfig[key]["lname"],
-                    workspaces: workspacesInfo, perms: perms
-                });
-            }
-        }
-    }    
-    res.render("login");
+    return res.render("workspaces/workspacesPage", {pfp: usersConfig[userKey]["pfp"], 
+        fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+        workspaces: workspacesInfo, perms: perms
+    });
 });
 
 router.get("/create", async (req, res) => {
@@ -65,7 +60,7 @@ router.get("/create", async (req, res) => {
     let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
     let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
 
-    if(perms.includes("workspaces.create")) {
+    if(perms.includes(permission.CREATE_WORKSPACES)) {
         res.render("workspaces\\create", {pfp: usersConfig[userKey]["pfp"], 
         fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
         workspaces: workspacesInfo, perms: perms});
@@ -95,14 +90,14 @@ router.post("/create", multer().single('image'), async (req, res) => {
     let rolesIDS = usersConfig[userKey]["roles"].split(";");
     let perms = await loaders.roles(rolesIDS);
 
-    if(!perms.includes("workspaces.create")) {
+    if(!perms.includes(permission.CREATE_WORKSPACES)) {
         res.render("workspaces\\workspacesPage", {pfp: usersConfig[userKey]["pfp"], 
         fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
         workspaces: workspacesInfo, perms: perms, error: 251});
     }
 
     try {
-        let imageFile = req.file
+        let imageFile = req.file;
         let size = util.returnSize(imageFile.buffer.length).split(" ");
         let type = identifyBuffer(imageFile.buffer);
 
@@ -153,6 +148,38 @@ router.post("/create", multer().single('image'), async (req, res) => {
         console.log(err);
         res.render("itworks", {error: 254});
     } 
+});
+
+router.get("/:workspaceID", async (req, res) => {
+    let authCookie = req.cookies.UUID;
+    if(util.isEmptyOrUndefined(authCookie)) {
+        return res.render("login", {});
+    }
+
+    let usersConfig = await fileHandler.readJson("data/users.json");
+    let userKey = await auth.getKey(authCookie, usersConfig);
+    if(util.isEmptyOrUndefined(userKey)) {
+        return res.render("login", {});
+    }
+
+    let orgs = await fileHandler.readJson("data/orgs.json");
+    let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
+    let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
+
+    let rolesIDS = usersConfig[userKey]["roles"].split(";");
+    let perms = await loaders.roles(rolesIDS);
+
+    if(workspacesIDS.includes(req.params.workspaceID)) {
+        res.render("itworks", {pfp: usersConfig[userKey]["pfp"], 
+        fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+        workspaces: workspacesInfo, perms: perms, error: 255});
+    } else {
+        res.render("workspaces\\workspacesPage", {pfp: usersConfig[userKey]["pfp"], 
+        fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+        workspaces: workspacesInfo, perms: perms, error: 255});
+    }
+
+    
 });
 
 module.exports = router

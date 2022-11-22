@@ -9,7 +9,7 @@
     
     <script src="/assets/lib/js/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="/assets/lib/css/sweetalert2.min.css">
-    <script type="text/javascript" src="/assets/js/codes.js"></script>
+    <script type="text/javascript" src="/assets/js/permission.js"></script>
 
       <% if (typeof perms !== 'undefined') {%>
         <script>
@@ -17,7 +17,6 @@
         </script>
       <% } %>
 
-    <script type="text/javascript" src="/assets/js/permission.js"></script>
 
     <style>
       #createUrl {
@@ -28,13 +27,13 @@
 <body>
     <%- include('../header'); %>
 
-    <% if (typeof error !== 'undefined') {%>
-      <script>
-        popup(251);
-      </script>
-   <% } %>
-
    <%- include('workspaces'); %>
+
+   <% if (typeof error !== 'undefined') {%>
+      <script>
+        const error = '<%- error  %>';
+      </script>
+    <% } %>
 
     <%- include('../footer'); %>
 </body>

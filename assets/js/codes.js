@@ -20,7 +20,13 @@ const errors = {
     "254": {
         "type": "error",
         "title": "Oops...",
-        "message": " An Unknown Error as occurred!"
+        "message": "An Unknown Error as occurred!"
+    },
+
+    "255": {
+        "type": "error",
+        "title": "Oops...",
+        "message": "You are not in that organization!"
     }
 };
 
@@ -30,6 +36,6 @@ function getError(code) {
     return [code["type"], code["title"], code["message"]];
 }
 
-if(ERROR !== undefined) {
-    popup("" + ERROR);
+if(error !== undefined) {
+    popup(parseInt(error));
 }

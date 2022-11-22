@@ -2,14 +2,15 @@ const express = require("express")
 const path = require("path")
 const bodyParser = require("body-parser")
 const cookieParser = require('cookie-parser');
-const port = 3000
+const port = 3000;
 
 const util = require("./util/variables");
-const fileHandler = require("./util/fileHandler")
-const loaders = require("./util/loaders")
+const fileHandler = require("./util/fileHandler");
+const loaders = require("./util/loaders");
+const auth = require("./util/auth");
 
 const app = express();
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, 'views'));
 app.use('/assets', express.static("assets"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,28 +30,23 @@ app.get("/", async (req, res) => {
     }
 
     let usersConfig = await fileHandler.readJson("data/users.json");
+    let userKey = await auth.getKey(authCookie, usersConfig);
+    if(util.isEmptyOrUndefined(userKey)) {
+        return res.render("login", {});
+    }
 
-    for(var key in usersConfig) {
-        let sessions = usersConfig[key]["sessions"];
-        
-        for(let i = 0; i < sessions.length; i++) {
-            if(authCookie === sessions[i]["UUID"]) {
-                let orgs = await fileHandler.readJson("data/orgs.json");
+    let orgs = await fileHandler.readJson("data/orgs.json");
 
-                let workspacesIDS = orgs[usersConfig[key]["org"]]["workspaces"].split(";");
-                let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
+    let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
+    let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
 
-                let rolesIDS = usersConfig[key]["roles"].split(";");
-                let perms = await loaders.roles(rolesIDS);
+    let rolesIDS = usersConfig[userKey]["roles"].split(";");
+    let perms = await loaders.roles(rolesIDS);
 
-                return res.render("dashboard", {pfp: usersConfig[key]["pfp"], 
-                fname: usersConfig[key]["fname"], lname: usersConfig[key]["lname"],
-                workspaces: workspacesInfo, perms: perms
-                });
-            }
-        }
-    }    
-    res.render("login");
+    return res.render("dashboard", {pfp: usersConfig[userKey]["pfp"], 
+        fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+        workspaces: workspacesInfo, perms: perms
+    });
 });
 
 app.listen(port, () => {
