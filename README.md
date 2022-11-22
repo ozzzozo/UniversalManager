@@ -9,3 +9,4 @@
 252 - Image size must not exceed 2MB! <br>
 253 - Invalid File Type! <br>
 254 - An Unknown Error as occurred! <br>
+255 - You are not in that organization! <br>
