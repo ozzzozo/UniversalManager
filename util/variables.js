@@ -27,8 +27,16 @@ function returnSize(number) {
     }
 }
 
+async function getObject(key, value, array) {
+    array.forEach(element => {
+        if(element["workspace"][key] === value) {
+            return element;
+        }
+    });
+}
+
 function sanatize(text) {
     return text;
 }
 
-module.exports = { isEmptyOrUndefined, returnSize, imageTypes, sanatize };
+module.exports = { isEmptyOrUndefined, returnSize, imageTypes, sanatize, getObject };

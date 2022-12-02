@@ -1,0 +1,11 @@
+{
+    "name": "Yad2",
+    "client": "walla?",
+    "createdAt": "02/12/2022", 
+    "findings": 1,
+    "status": "finished",
+
+    "report": {
+        "MD": ""
+    }
+}

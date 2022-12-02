@@ -125,14 +125,17 @@ router.post("/create", multer().single('image'), async (req, res) => {
         let workspaceObject = {
             "banner": filename + "." + type,
             "name": name,
-            "description": desc,
-            "reports": ""
+            "description": desc
         };
 
         let baseDir = "./data/workspaces/" + workspaceUUID + "/";
 
         if (!fs.existsSync(baseDir)){
             fs.mkdirSync(baseDir);
+        }
+
+        if (!fs.existsSync(baseDir + "reports")){
+            fs.mkdirSync(baseDir + "reports");
         }
 
         fileHandler.writeJson(baseDir + "workspace.json", workspaceObject);
@@ -169,10 +172,20 @@ router.get("/:workspaceID", async (req, res) => {
     let rolesIDS = usersConfig[userKey]["roles"].split(";");
     let perms = await loaders.roles(rolesIDS);
 
-    if(workspacesIDS.includes(req.params.workspaceID)) {
-        res.render("itworks", {pfp: usersConfig[userKey]["pfp"], 
+    let workspaceID = req.params.workspaceID;
+
+    if(workspacesIDS.includes(workspaceID)) {
+        workspacesInfo.forEach(element => {
+            if(element["workspace"]["ID"] === workspaceID) {
+                workspace = element["workspace"];
+            }
+        });
+
+        let reports = await loaders.reports(workspaceID);
+
+        res.render("workspaces\\workspace", {pfp: usersConfig[userKey]["pfp"], 
         fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
-        workspaces: workspacesInfo, perms: perms, error: 255});
+        workspace: workspace, perms: perms, error: 255, reports: reports});
     } else {
         res.render("workspaces\\workspacesPage", {pfp: usersConfig[userKey]["pfp"], 
         fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],

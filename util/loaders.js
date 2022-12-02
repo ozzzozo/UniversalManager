@@ -19,7 +19,7 @@ async function workspacesInfo(workspacesIDS) {
         let workspace = await fileHandler.readJson(path + "workspace.json");
 
         workspace["ID"] = workspacesIDS[i];
-        workspace["ReportsCount"] = workspace["reports"].split(";").length - 1;
+        workspace["ReportsCount"] = fileHandler.countFiles(path + "reports");
 
         workspacesInfo.push({workspace: workspace});
     }
@@ -43,4 +43,18 @@ async function roles(rolesIDS) {
     return perms;
 }
 
-module.exports = { workspacesInfo, roles }
+async function reports(workspaceID) {
+    let path =  `data/workspaces/${workspaceID}/reports/`;
+    let filenames = await fileHandler.readFolder(path);
+    let reports = [];
+
+    filenames.forEach(filename => {
+        fileHandler.readJson(path + filename).then((json) => {
+            reports.push(json)
+        })
+    });
+
+    return reports;
+}
+
+module.exports = { workspacesInfo, roles, reports }
