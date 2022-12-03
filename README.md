@@ -10,3 +10,4 @@
 253 - Invalid File Type! <br>
 254 - An Unknown Error as occurred! <br>
 255 - You are not in that organization! <br>
+256 - You don\'t have the required permissions to create a report!  <br>
