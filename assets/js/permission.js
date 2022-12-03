@@ -9,6 +9,7 @@ const USERS_CHANGE = "users.change";
 const USERS_DELETE = "users.delete";
 const WORKSPACES_CREATE = "workspaces.create";
 const WORKSPACES_EDIT = "workspaces.edit";
+const REPORTS_CREATE = "reports.create";
 
 function createWorkspaceListener(id) {
     let link = document.getElementById(id);

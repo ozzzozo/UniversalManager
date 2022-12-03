@@ -2,8 +2,12 @@ reports = JSON.parse(reports);
 const table = document.getElementById("insertTable");
 const entries = document.getElementById("entries");
 
-function goto(id) {
-    window.location.href += "/" + id;
+function goto(whereTo) {
+    if(window.location.href.endsWith("/")) {
+        window.location.href += whereTo;
+    } else {
+        window.location.href += "/" + whereTo;
+    }
 }
 
 entries.innerText = `Showing 1 to ${reports.length % 10} of ${reports.length} Entries`;

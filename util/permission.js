@@ -5,6 +5,7 @@ const CHANGE_USERS = "users.change";
 const DELETE_USERS = "users.delete";
 const CREATE_WORKSPACES = "workspaces.create";
 const EDIT_WORKSPACES = "workspaces.edit";
+const CREATE_REPORTS = "reports.create";
 
 const { 
     v1: uuidv1,
@@ -37,4 +38,4 @@ async function getRole(roleID) {
 }
 
 module.exports = { addSession, getRole, getUUID, CREATE_USERS, CHANGE_USERS,
-    DELETE_USERS, CREATE_WORKSPACES, EDIT_WORKSPACES };
+    DELETE_USERS, CREATE_WORKSPACES, EDIT_WORKSPACES, CREATE_REPORTS };

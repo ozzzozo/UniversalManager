@@ -27,6 +27,12 @@ const errors = {
         "type": "error",
         "title": "Oops...",
         "message": "You are not in that organization!"
+    },
+
+    "256": {
+        "type": "error",
+        "title": "Oops...",
+        "message": "You don't have the required permissions to create a report!"
     }
 };
 
