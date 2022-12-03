@@ -191,8 +191,10 @@ router.get("/:workspaceID", async (req, res) => {
         fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
         workspaces: workspacesInfo, perms: perms, error: 255});
     }
-
-    
 });
+
+router.get("/:workspaceID/create", async(req, res) => {
+    
+}); 
 
 module.exports = router
