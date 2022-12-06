@@ -282,10 +282,7 @@ router.post("/:workspaceID/create", async(req, res) => {
             "createdAt": today,
             "findings": 0,
             "status": "active",
-
-            "report": {
-                "MD": ""
-            }
+            "MD": ""
         }
 
         fileHandler.writeJson(`${baseDir}/${uuid}.json`, jobject);
@@ -297,5 +294,75 @@ router.post("/:workspaceID/create", async(req, res) => {
         workspaces: workspacesInfo, perms: perms, error: 255});
     }
 }); 
+
+router.get("/:workspaceID/:reportID", async(req, res) => {
+    let authCookie = req.cookies.UUID;
+    if(util.isEmptyOrUndefined(authCookie)) {
+        return res.render("login", {});
+    }
+
+    let usersConfig = await fileHandler.readJson("data/users.json");
+    let userKey = await auth.getKey(authCookie, usersConfig);
+    if(util.isEmptyOrUndefined(userKey)) {
+        return res.render("login", {});
+    }
+
+    let orgs = await fileHandler.readJson("data/orgs.json");
+    let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
+    let workspacesInfo = await loaders.workspacesInfo(workspacesIDS);
+
+    let rolesIDS = usersConfig[userKey]["roles"].split(";");
+    let perms = await loaders.roles(rolesIDS);
+
+    let workspaceID = req.params.workspaceID;
+
+    if(workspacesIDS.includes(workspaceID)) {
+        let reportID = util.sanatize(req.params.reportID);
+
+        let filePath = "./data/workspaces/" + workspaceID + "/reports/" + reportID + ".json";
+        fileHandler.readJson(filePath).then((report) => {
+            res.render("reports\\report", {pfp: usersConfig[userKey]["pfp"], 
+            fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+            workspaces: workspacesInfo, perms: perms, reportMD: report["MD"]});
+        });
+    } else {
+        res.render("workspaces\\workspacesPage", {pfp: usersConfig[userKey]["pfp"], 
+        fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+        workspaces: workspacesInfo, perms: perms, error: 255});
+    }
+});
+
+router.post("/:workspaceID/:reportID/save", async(req, res) => { 
+    let authCookie = req.cookies.UUID;
+    if(util.isEmptyOrUndefined(authCookie)) {
+        return res.render("login", {});
+    }
+
+    let usersConfig = await fileHandler.readJson("data/users.json");
+    let userKey = await auth.getKey(authCookie, usersConfig);
+    if(util.isEmptyOrUndefined(userKey)) {
+        return res.render("login", {});
+    }
+
+    let orgs = await fileHandler.readJson("data/orgs.json");
+    let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
+
+    let workspaceID = req.params.workspaceID;
+
+    if(workspacesIDS.includes(workspaceID)) {
+        let reportID = util.sanatize(req.params.reportID);
+        let md = util.sanatize(req.body.reportContent);
+
+        let filePath = "./data/workspaces/" + workspaceID + "/reports/" + reportID + ".json";
+
+        fileHandler.readJson(filePath).then((report) => {
+            report["MD"] = md;
+            fileHandler.writeJson(filePath, report);
+            res.json({"code": "ok"})
+        });
+    } else {
+        res.json({"error": "Invalid workspace"});
+    }
+});
 
 module.exports = router

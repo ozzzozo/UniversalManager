@@ -1,11 +1,8 @@
 {
-    "name": "Yad2",
-    "client": "walla?",
-    "createdAt": "02/12/2022", 
-    "findings": 1,
-    "status": "finished",
-
-    "report": {
-        "MD": ""
-    }
+  "name": "Yad2",
+  "client": "walla?",
+  "createdAt": "02/12/2022",
+  "findings": 1,
+  "status": "finished",
+  "MD": "JTIzJTIwVGVzdCUwQXRlc3RpbmclMjBzYXZpbmclMjBJJTIwZ3Vlc3MlMEElM0UlMjBZZXMlMEElMEElNjAlNjAlNjBodG1sJTBBJTNDcCUzRSUwQXRoaXMlMjBpcyUyMGh0bWwlMEElM0MlMkZwJTNFJTBBJTYwJTYwJTYw"
 }
