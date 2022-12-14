@@ -42,6 +42,4 @@ function getError(code) {
     return [code["type"], code["title"], code["message"]];
 }
 
-if(error !== undefined) {
-    popup(parseInt(error));
-}
+popup(parseInt(error));
