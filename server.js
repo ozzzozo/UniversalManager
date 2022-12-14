@@ -13,7 +13,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, 'views'));
 app.use('/assets', express.static("assets"));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true , limit: '20mb'}));
 app.use(cookieParser());
 
 const usersHandler = require("./routers/users")

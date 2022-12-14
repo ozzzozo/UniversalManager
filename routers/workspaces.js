@@ -1,9 +1,9 @@
 const express = require('express');
 const multer = require('multer');
 const fs = require("fs");
+var querystring = require("querystring");
 
 var identifyBuffer = require('buffer-signature').identify;
-
 
 const router = express.Router();
 const util = require("../util/variables");
@@ -360,6 +360,40 @@ router.post("/:workspaceID/:reportID/save", async(req, res) => {
             fileHandler.writeJson(filePath, report);
             res.json({"code": "ok"})
         });
+    } else {
+        res.json({"error": "Invalid workspace"});
+    }
+});
+
+router.post("/:workspaceID/:reportID/saveImage", async(req, res) => { 
+    let authCookie = req.cookies.UUID;
+    if(util.isEmptyOrUndefined(authCookie)) {
+        return res.render("login", {});
+    }
+
+    let usersConfig = await fileHandler.readJson("data/users.json");
+    let userKey = await auth.getKey(authCookie, usersConfig);
+    if(util.isEmptyOrUndefined(userKey)) {
+        return res.render("login", {});
+    }
+
+    let orgs = await fileHandler.readJson("data/orgs.json");
+    let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
+
+    let workspaceID = req.params.workspaceID;
+
+    if(workspacesIDS.includes(workspaceID)) {
+        let imageData = util.sanatize(req.body.data);
+        imageData = querystring.unescape(imageData);
+
+        let filePath = "./assets/images/reports/";
+
+        imageData = imageData.split(",")[1];
+        const hash = crypto.hashString(imageData);
+
+        fs.writeFileSync(filePath + hash + ".png", imageData, {encoding: 'base64'});
+
+        res.json({"url": filePath.replace(".", "") + hash + ".png"});
     } else {
         res.json({"error": "Invalid workspace"});
     }

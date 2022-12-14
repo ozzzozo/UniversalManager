@@ -7,4 +7,9 @@ function hashFile(buffer) {
     return hashsum.digest("hex");
 }
 
-module.exports = { hashFile };
+function hashString(string) {
+    let hash = crypto.createHash('sha256').update(string).digest('hex');
+    return hash;
+}
+
+module.exports = { hashFile, hashString };

@@ -136,14 +136,14 @@
             exports.defaults.lang = lang;
         };
         
-        // CommonJS/Node.js
+        
         if (typeof require === "function" && typeof exports === "object" && typeof module === "object")
         { 
             module.exports = factory;
         }
-        else if (typeof define === "function")  // AMD/CMD/Sea.js
+        else if (typeof define === "function") 
         {
-            if (define.amd) { // for Require.js
+            if (define.amd) {
 
                 define(["editormd"], function(editormd) {
                     factory(editormd);
@@ -163,16 +163,14 @@
         
     })();
 
-        $(function() {
             var editor = editormd("report-editor", {
                 height: "55rem",
                 path: "/assets/lib/meditor/lib/",
                 flowChart: true,
                 tex: true,
-                mardown: "",
+                markdown: "",
                 tabSize: 4
             });
-        });
     </script>
 
     <script>
