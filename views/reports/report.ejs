@@ -32,7 +32,7 @@
             </textarea>
         </div>
 
-        <a download="test.pdf" href="downloadPdf" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="downloadPdf();">Download PDF</a>
+        <a href="downloadPdf" target="_blank" download="report.pdf" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="downloadPdf();">Download PDF</a>
     </div>
 
     <script type="text/javascript">
@@ -171,6 +171,7 @@
                 path: "/assets/lib/meditor/lib/",
                 flowChart: true,
                 tex: true,
+                taskList : true,
                 markdown: "",
                 tabSize: 4
             });

@@ -426,7 +426,7 @@ router.get("/:workspaceID/:reportID/downloadPdf", async(req, res) => {
             let filePath = "./data/workspaces/" + workspaceID + "/reports/" + reportID + ".json";
             
             fileHandler.readJson(filePath).then(async (report) => {
-                let decodedContent = Buffer(report["MD"], "base64");
+                let decodedContent = Buffer.from(report["MD"], "base64");
                 decodedContent = decodedContent.toString("ascii");
 
                 const pdf = await mdToPdf({ content: decodeURIComponent(decodedContent), dest: "here.pdf"}).catch(console.error);

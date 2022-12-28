@@ -22,7 +22,7 @@ router.post("/users/auth", async (req, res) => {
     password = crypto.createHash('sha256').update(password).digest('base64');
 
     if((await auth.login(username, password)) === true) {
-        let os = req.headers['user-agent']; //.match(/(?<=\().*?(?=;)/)[0]; // possible xss if displayed?
+        let os = util.sanatize(req.headers['user-agent']); 
         let uuid = await permission.addSession(username, os, req.socket.remoteAddress);
 
         if(uuid !== undefined) {

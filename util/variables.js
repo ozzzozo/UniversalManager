@@ -2,6 +2,8 @@
     All of the Util Functions Regarding Vars
 */
 
+const sanitizer = require('sanitizer');
+
 const imageTypes = [
     "image/apng",
     "image/gif",
@@ -36,7 +38,7 @@ async function getObject(key, value, array) {
 }
 
 function sanatize(text) {
-    return text;
+    return sanitizer.sanitize(sanitizer.escape(text));
 }
 
 module.exports = { isEmptyOrUndefined, returnSize, imageTypes, sanatize, getObject };
