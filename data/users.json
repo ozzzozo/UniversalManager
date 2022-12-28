@@ -1,9 +1,9 @@
 {
-  "UniversalMind": {
-    "password": "A6J7Ey6H3Ubnm/kXnTTPteIj3EN1xCYjH8OoL2/GyDA=",
+  "Tester": {
+    "password": "ubxamR25VrM+7JY3/SpGpln5NBQHa2l7z6EJMt6gZR8=",
     "fname": "John",
     "lname": "Doe",
-    "email": "jd@universalmind.io",
+    "email": "test@example.com",
     "pfp": "default",
     "sessions": [
     ],

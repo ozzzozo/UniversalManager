@@ -1,9 +1,12 @@
 const express = require('express');
 const multer = require('multer');
 const fs = require("fs");
-var querystring = require("querystring");
+const stream = require("stream");
 
-var identifyBuffer = require('buffer-signature').identify;
+const querystring = require("querystring");
+const { mdToPdf } = require("md-to-pdf");
+
+const identifyBuffer = require('buffer-signature').identify;
 
 const router = express.Router();
 const util = require("../util/variables");
@@ -351,7 +354,7 @@ router.post("/:workspaceID/:reportID/save", async(req, res) => {
 
     if(workspacesIDS.includes(workspaceID)) {
         let reportID = util.sanatize(req.params.reportID);
-        let md = util.sanatize(req.body.reportContent);
+        let md = req.body.reportContent;
 
         let filePath = "./data/workspaces/" + workspaceID + "/reports/" + reportID + ".json";
 
@@ -396,6 +399,51 @@ router.post("/:workspaceID/:reportID/saveImage", async(req, res) => {
         res.json({"url": filePath.replace(".", "") + hash + ".png"});
     } else {
         res.json({"error": "Invalid workspace"});
+    }
+});
+
+router.get("/:workspaceID/:reportID/downloadPdf", async(req, res) => {
+    let authCookie = req.cookies.UUID;
+    if(util.isEmptyOrUndefined(authCookie)) {
+        return res.render("login", {});
+    }
+
+    let usersConfig = await fileHandler.readJson("data/users.json");
+    let userKey = await auth.getKey(authCookie, usersConfig);
+    if(util.isEmptyOrUndefined(userKey)) {
+        return res.render("login", {});
+    }
+
+    let orgs = await fileHandler.readJson("data/orgs.json");
+    let workspacesIDS = orgs[usersConfig[userKey]["org"]]["workspaces"].split(";");
+
+    let workspaceID = req.params.workspaceID;
+    let reportID = req.params.reportID;
+
+    if(workspaceID.includes(workspaceID)) {
+        (async () => {
+
+            let filePath = "./data/workspaces/" + workspaceID + "/reports/" + reportID + ".json";
+            
+            fileHandler.readJson(filePath).then(async (report) => {
+                let decodedContent = Buffer(report["MD"], "base64");
+                decodedContent = decodedContent.toString("ascii");
+
+                const pdf = await mdToPdf({ content: decodeURIComponent(decodedContent), dest: "here.pdf"}).catch(console.error);
+        
+                if (pdf) {
+                    var readStream = new stream.PassThrough();
+                    readStream.end(pdf.content);
+                  
+                    res.set('Content-disposition', 'attachment; filename=' + "report.pdf");
+                    res.set('Content-Type', 'text/plain');
+                  
+                    readStream.pipe(res);
+                }
+            });
+        })();
+    } else {
+        res.json({"error": "Invalid workspace"})
     }
 });
 

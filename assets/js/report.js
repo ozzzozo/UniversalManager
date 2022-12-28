@@ -1,4 +1,3 @@
-
 const textarea = document.getElementsByTagName("textarea")[0]
 
 async function saveReport() {
@@ -55,21 +54,6 @@ async function uploadImage(data) {
     return response.json();
 }
 
-const interval = setInterval(function() {
-    saveReport();
-}, 5000);
- 
-if(window.location.href.endsWith("/")) {
-} else {
-    window.location.href += "/" ;
-}
-
-if(reportMD) {
-    reportMD = window.atob(reportMD);
-    reportMD = decodeURIComponent(reportMD);
-    textarea.value = reportMD;
-}
-
 document.getElementById('report-editor').onpaste = async function (event) {
     var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
     
@@ -108,4 +92,19 @@ document.getElementById('report-editor').onpaste = async function (event) {
       reader.readAsDataURL(blob);
     }
 
+}
+
+const interval = setInterval(function() {
+    saveReport();
+}, 5000);
+ 
+if(window.location.href.endsWith("/")) {
+} else {
+    window.location.href += "/" ;
+}
+
+if(reportMD) {
+    reportMD = window.atob(reportMD);
+    reportMD = decodeURIComponent(reportMD);
+    textarea.value = reportMD;
 }

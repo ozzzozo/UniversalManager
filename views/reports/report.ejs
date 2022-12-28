@@ -19,6 +19,7 @@
     <script src="/assets/lib/js/jquery.min.js"></script>
     <script src="/assets/lib/meditor/js/editormd.min.js"></script>
     <link rel="stylesheet" href="/assets/lib/meditor/css/editormd.css" />
+
 </head>
 <body>
     <%- include('../header'); %>
@@ -30,6 +31,8 @@
         **Editor.md**: The open source embeddable online markdown editor, based on CodeMirror & jQuery & Marked.
             </textarea>
         </div>
+
+        <a download="test.pdf" href="downloadPdf" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="downloadPdf();">Download PDF</a>
     </div>
 
     <script type="text/javascript">
