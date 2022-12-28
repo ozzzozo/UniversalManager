@@ -11,7 +11,6 @@ This version is the first usable build and is very early compared to what's plan
 - Exporting reports to pdf format
 - Doesn't rely on the internet
 - slick design
-- multi-platform support
 - Permission based
 ## Roadmap
 - Improve export to pdf features
