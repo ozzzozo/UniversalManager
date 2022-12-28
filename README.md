@@ -1,13 +1,56 @@
-# UniversalManager
- An app to manage your PT and Bug Bounty Reports/Notes.
 
-## Error codes
-0-250 success:<br>
-0 - Workspace successfully created! <br>
-251-500 error: <br>
-251 - You don\'t have the required permissions to create a workspace!  <br>
-252 - Image size must not exceed 2MB! <br>
-253 - Invalid File Type! <br>
-254 - An Unknown Error as occurred! <br>
-255 - You are not in that organization! <br>
-256 - You don\'t have the required permissions to create a report!  <br>
+# Universal Manager
+
+UniversalManager is a **free** framework to help you manage and collaborate on your Pentest and/or Bug Bounty reports, If its for your personal or organizational use.
+<br>
+This version is the first usable build and is very early compared to what's planned.
+## Features
+
+- Organized workspaces
+- Reports in md format
+- Exporting reports to pdf format
+- Doesn't rely on the internet
+- slick design
+- multi-platform support
+- Permission based
+## Roadmap
+- Improve export to pdf features
+- Improve report saving to enable collabration
+- Implement users managment
+- Add edit report page
+- Add dark theme switch
+- Add ssl
+- Add report templating
+    - findings templating
+    - pages templates
+    - footers and headers
+- Add Sub workspaces?
+- Add org policies?
+## FAQ
+
+#### What is the login?
+
+The default login for now is `Tester:Tester!Password`, currently there is no way to change it without manual work.
+
+## Installation
+
+To run this project you need node installed on your system.
+<br>
+After that you can execute the following:
+```bash
+git clone https://github.com/ozzzozo/UniversalManager.git
+cd UniversalManager
+node server.js
+```
+
+And then browse to http://localhost:3000
+    
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
