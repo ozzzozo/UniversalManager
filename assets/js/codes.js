@@ -33,6 +33,12 @@ const errors = {
         "type": "error",
         "title": "Oops...",
         "message": "You don't have the required permissions to create a report!"
+    },
+
+    "257": {
+        "type": "error",
+        "title": "Oops...",
+        "message": "Report not found!"
     }
 };
 

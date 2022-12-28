@@ -323,11 +323,18 @@ router.get("/:workspaceID/:reportID", async(req, res) => {
         let reportID = util.sanatize(req.params.reportID);
 
         let filePath = "./data/workspaces/" + workspaceID + "/reports/" + reportID + ".json";
-        fileHandler.readJson(filePath).then((report) => {
-            res.render("reports\\report", {pfp: usersConfig[userKey]["pfp"], 
+
+        if(fs.existsSync(filePath)) {
+            fileHandler.readJson(filePath).then((report) => {
+                res.render("reports\\report", {pfp: usersConfig[userKey]["pfp"], 
+                fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
+                workspaces: workspacesInfo, perms: perms, reportMD: report["MD"]});
+            });
+        } else {
+            res.render("workspaces\\workspacesPage", {pfp: usersConfig[userKey]["pfp"], 
             fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
-            workspaces: workspacesInfo, perms: perms, reportMD: report["MD"]});
-        });
+            workspaces: workspacesInfo, perms: perms, error: 257});
+        }
     } else {
         res.render("workspaces\\workspacesPage", {pfp: usersConfig[userKey]["pfp"], 
         fname: usersConfig[userKey]["fname"], lname: usersConfig[userKey]["lname"],
@@ -358,11 +365,15 @@ router.post("/:workspaceID/:reportID/save", async(req, res) => {
 
         let filePath = "./data/workspaces/" + workspaceID + "/reports/" + reportID + ".json";
 
-        fileHandler.readJson(filePath).then((report) => {
-            report["MD"] = md;
-            fileHandler.writeJson(filePath, report);
-            res.json({"code": "ok"})
-        });
+        if(fs.existsSync(filePath)) {
+            fileHandler.readJson(filePath).then((report) => {
+                report["MD"] = md;
+                fileHandler.writeJson(filePath, report);
+                res.json({"code": "ok"})
+            });
+        } else {
+            res.json({"error": "Invalid report"})
+        }
     } else {
         res.json({"error": "Invalid workspace"});
     }
@@ -425,22 +436,26 @@ router.get("/:workspaceID/:reportID/downloadPdf", async(req, res) => {
 
             let filePath = "./data/workspaces/" + workspaceID + "/reports/" + reportID + ".json";
             
-            fileHandler.readJson(filePath).then(async (report) => {
-                let decodedContent = Buffer.from(report["MD"], "base64");
-                decodedContent = decodedContent.toString("ascii");
-
-                const pdf = await mdToPdf({ content: decodeURIComponent(decodedContent), dest: "here.pdf"}).catch(console.error);
-        
-                if (pdf) {
-                    var readStream = new stream.PassThrough();
-                    readStream.end(pdf.content);
-                  
-                    res.set('Content-disposition', 'attachment; filename=' + "report.pdf");
-                    res.set('Content-Type', 'text/plain');
-                  
-                    readStream.pipe(res);
-                }
-            });
+            if(fs.existsSync(filePath)) {
+                fileHandler.readJson(filePath).then(async (report) => {
+                    let decodedContent = Buffer.from(report["MD"], "base64");
+                    decodedContent = decodedContent.toString("ascii");
+    
+                    const pdf = await mdToPdf({ content: decodeURIComponent(decodedContent), dest: "here.pdf"}).catch(console.error);
+            
+                    if (pdf) {
+                        var readStream = new stream.PassThrough();
+                        readStream.end(pdf.content);
+                      
+                        res.set('Content-disposition', 'attachment; filename=report.pdf');
+                        res.set('Content-Type', 'text/plain');
+                      
+                        readStream.pipe(res);
+                    }
+                });
+            } else {
+                res.json({"error": "Invalid report"})
+            }
         })();
     } else {
         res.json({"error": "Invalid workspace"})
