@@ -31,6 +31,10 @@ This version is the first usable build and is very early compared to what's plan
 
 The default login for now is `Tester:Tester!Password`, currently there is no way to change it without manual work.
 
+### Does this work on Linux?
+
+Not currently.
+
 ## Installation
 
 To run this project you need node installed on your system.
